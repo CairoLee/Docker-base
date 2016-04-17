@@ -4,7 +4,7 @@
 #############################################################
 
 # 基础镜像
-FROM centos:6.7
+FROM daocloud.io/centos:6
 
 # 作者
 MAINTAINER CairoLee "cairoliyu@gmail.com"
