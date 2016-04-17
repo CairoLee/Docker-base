@@ -20,7 +20,6 @@ RUN echo 'root:docker-base' | chpasswd
 # -------- 安装中文支持 -------------------------------------
 RUN yum -y install kde-l10n-Chinese
 RUN yum -y reinstall glibc-common
-RUN yum -y groupinstall chinese-support
 RUN sed -i 's/LANG="en_US.UTF-8"/LANG="zh_CN.UTF-8"/g' /etc/sysconfig/i18n
 RUN echo 'SUPPORTED="zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en"' >> /etc/sysconfig/i18n
 
