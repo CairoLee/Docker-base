@@ -12,25 +12,23 @@ MAINTAINER CairoLee "cairoliyu@gmail.com"
 # 安装命令行工具
 RUN yum install -y sed curl tar git passwd sudo vim wget
 
-# 修改时区
-RUN yum install -y ntpdate
-RUN \cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+# 修改系统时区为 UTC+8:00
+RUN yum install -y ntpdate && \
+\cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-# 安装SSH服务
+# 安装SSH服务并赋予 root 账号初始密码
 RUN yum install -y openssh-server openssh-clients && \
 sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config && \
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key && \
 ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key && \
-mkdir /var/run/sshd
+mkdir /var/run/sshd && \
+echo 'root:docker-base' | chpasswd
 
-# 初始化root密码
-RUN echo 'root:docker-base' | chpasswd
-
-# 安装中文支持
-RUN yum -y install kde-l10n-Chinese
-RUN yum -y reinstall glibc-common
-RUN sed -i 's/LANG="en_US.UTF-8"/LANG="zh_CN.UTF-8"/g' /etc/sysconfig/i18n
-RUN echo 'SUPPORTED="zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en"' >> /etc/sysconfig/i18n
+# 中文语言支持
+RUN yum -y install kde-l10n-Chinese && \
+yum -y reinstall glibc-common && \
+sed -i 's/LANG="en_US.UTF-8"/LANG="zh_CN.UTF-8"/g' /etc/sysconfig/i18n && \
+echo 'SUPPORTED="zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en"' >> /etc/sysconfig/i18n
 
 # 清理工作
 RUN rm -rf /root/*
