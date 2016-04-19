@@ -12,6 +12,10 @@ MAINTAINER CairoLee "cairoliyu@gmail.com"
 # 安装命令行工具
 RUN yum install -y sed curl tar git passwd sudo vim wget
 
+# 修改时区
+RUN yum install -y ntpdate
+RUN \cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
 # 安装SSH服务
 RUN yum install -y openssh-server openssh-clients && \
 sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config && \
